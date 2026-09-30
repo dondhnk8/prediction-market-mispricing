@@ -25,18 +25,20 @@ Sample: 970 matches (2,910 outcomes), 11 August 2023 to 8 January 2026.
 
 Pinnacle's closing probabilities matched actual frequencies closely across the range, and every gap was within two standard errors of zero. Low-probability outcomes happened slightly less often than claimed and high-probability outcomes slightly more often, which is the direction of the favorite-longshot bias, but the differences are inside the noise at this sample size.
 
-                  n  avg_prob  actual    gap  noise
-bin                                                
-(-0.001, 0.1]   118     0.072   0.059  0.013  0.024
-(0.1, 0.2]      510     0.157   0.143  0.014  0.016
-(0.2, 0.3]     1062     0.253   0.253  0.000  0.013
-(0.3, 0.4]      374     0.343   0.340  0.004  0.025
-(0.4, 0.5]      301     0.447   0.458 -0.012  0.029
-(0.5, 0.6]      243     0.552   0.551  0.000  0.032
-(0.6, 0.7]      144     0.648   0.639  0.009  0.040
-(0.7, 0.8]      113     0.744   0.788 -0.043  0.041
-(0.8, 0.9]       42     0.835   0.905 -0.070  0.057
-(0.9, 1.0]        3     0.907   1.000 -0.093  0.168
+| Claimed probability | Outcomes | Avg. claimed | Actual | Gap | Std. error |
+|---|---:|---:|---:|---:|---:|
+| 0.0 to 0.1 | 118 | 0.072 | 0.059 | 0.013 | 0.024 |
+| 0.1 to 0.2 | 510 | 0.157 | 0.143 | 0.014 | 0.016 |
+| 0.2 to 0.3 | 1062 | 0.253 | 0.253 | 0.000 | 0.013 |
+| 0.3 to 0.4 | 374 | 0.343 | 0.340 | 0.004 | 0.025 |
+| 0.4 to 0.5 | 301 | 0.447 | 0.458 | -0.012 | 0.029 |
+| 0.5 to 0.6 | 243 | 0.552 | 0.551 | 0.000 | 0.032 |
+| 0.6 to 0.7 | 144 | 0.648 | 0.639 | 0.009 | 0.040 |
+| 0.7 to 0.8 | 113 | 0.744 | 0.788 | -0.043 | 0.041 |
+| 0.8 to 0.9 | 42 | 0.835 | 0.905 | -0.070 | 0.057 |
+| 0.9 to 1.0 | 3 | 0.907 | 1.000 | -0.093 | 0.168 |
+
+Gap = average claimed minus actual. Std. error = the random variation expected in the actual rate for that many outcomes. The 0.9 to 1.0 row holds only 3 outcomes and carries no weight.
 
 ## Data note
 
