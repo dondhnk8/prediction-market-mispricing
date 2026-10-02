@@ -8,7 +8,7 @@ A market price is a probability. To test whether it is wrong, I need a benchmark
 
 ## Status
 
-Phase 1 is complete: testing whether the benchmark itself is reliable. Prediction market data is not included yet.
+Phase 1 is complete: testing whether the benchmark itself is reliable. Phase 2 is in progress: collecting live Polymarket and benchmark snapshots for upcoming Premier League matches. No comparison result has been reported yet.
 
 ## What Phase 1 does
 
@@ -51,9 +51,22 @@ The Pinnacle closing odds columns are empty for 170 matches in 2025/26, from 17 
 - Proportional normalization is the simplest way to remove the margin. Other methods (power, Shin) treat longshots differently and could change results where the favorite-longshot bias would appear.
 - Premier League only.
 
+## Phase 2: live snapshots (in progress)
+
+- `fetch_epl.py` pulls upcoming Premier League match-winner markets from the Polymarket Gamma API and appends mid, bid, ask, normalized fair value and volume to `polymarket_snapshots.csv`.
+- `snapshot_benchmark.py` pulls Pinnacle and Betfair Exchange match-result odds through the OddsPapi API for matches inside a rolling window (`DAYS_AHEAD`) and appends fair probabilities to `benchmark_snapshots.csv`. For Betfair, fair value is the midpoint of the implied probabilities at the best back and best lay price, then normalized.
+- `match_fixtures.py` pairs Polymarket matches with OddsPapi fixtures by kickoff time and cleaned team names.
+
+Findings so far:
+
+- Polymarket match-winner markets trade thinly and have a spread of about 1 cent. The comparison therefore uses bid and ask, not the midpoint.
+- On the OddsPapi free tier, Pinnacle prices for a match more than a week away did not update between two fetches 25 hours apart, while Betfair prices did. Betfair Exchange is the live benchmark for now. This has not been retested close to kickoff.
+- A first one-match comparison used snapshots from different runs, so it is only a sanity check.
+- Polymarket and Kalshi fees are not yet included.
+
 ## Plan
 
-1. Pull live Polymarket and Kalshi prices for soccer markets.
+1. Pull live Polymarket and Kalshi prices for soccer markets (partly done).
 2. Log market price against the benchmark probability over weeks.
 3. Run the same calibration test on the prediction market data.
 4. Test whether news attention and large trades move prices away from fair value, and whether they revert.
@@ -76,13 +89,25 @@ python probability.py
 
 This prints the calibration table and saves the chart to `results/calibration.png`.
 
+For Phase 2, get a free OddsPapi key and store it in an environment variable. The scripts read it with `os.environ`, so the key never appears in the code. Do not commit it.
+
+export ODDSPAPI_KEY="your-key"
+
+python fetch_epl.py
+python snapshot_benchmark.py
+
+Each run appends rows to its CSV file, so repeated runs build a time series.
+
 ## Structure
 
 ```
-probability.py     data loading, margin removal, calibration table, chart
-data/              raw CSVs (not included)
-results/           output charts
-requirements.txt
+data/                     raw CSVs (not included)
+results/                  output charts
+benchmark_snapshots.csv   snapshot of the games
+fetch_epl.py              fetching Premier League games
+probability.py            data loading, margin removal, calibration table, chart
+snapshot_benchmark.py     creating the snapshot of the games using pinnacle, betfair-ex
+requirements.txt          requirements
 ```
 
 ## Disclaimer
